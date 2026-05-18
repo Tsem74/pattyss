@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Patty's design system — modern minimal, warm neutrals + amber accent.
+   All colors MUST be HSL. */
+
+@layer base {
+  :root {
+    /* Patty's Smash Burger — deep purple + orange brand */
+    --background: 40 30% 98%;
+    --foreground: 264 45% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 264 45% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 264 45% 14%;
+
+    /* Brand purple */
+    --primary: 264 55% 28%;
+    --primary-foreground: 40 30% 98%;
+    --primary-glow: 264 60% 42%;
+
+    /* Brand orange (accent) */
+    --accent: 28 95% 55%;
+    --accent-foreground: 264 45% 14%;
+    --accent-glow: 36 100% 62%;
+
+    --secondary: 264 30% 95%;
+    --secondary-foreground: 264 45% 14%;
+
+    --muted: 264 20% 95%;
+    --muted-foreground: 264 12% 42%;
+
+    --destructive: 0 78% 52%;
+    --destructive-foreground: 40 30% 98%;
+
+    --border: 264 18% 90%;
+    --input: 264 18% 90%;
+    --ring: 264 55% 28%;
+
+    --radius: 1rem;
+
+    /* Reusable gradients & shadows */
+    --gradient-warm: linear-gradient(135deg, hsl(28 95% 55%), hsl(36 100% 62%));
+    --gradient-brand: linear-gradient(135deg, hsl(264 55% 28%), hsl(264 70% 45%));
+    --gradient-dark: linear-gradient(180deg, hsl(264 45% 8% / 0) 0%, hsl(264 45% 8% / 0.9) 100%);
+    --shadow-soft: 0 4px 20px -8px hsl(264 45% 14% / 0.18);
+    --shadow-elegant: 0 24px 60px -22px hsl(264 55% 28% / 0.45);
+    --shadow-glow: 0 0 50px hsl(28 95% 55% / 0.4);
+    --shadow-card: 0 2px 14px -4px hsl(264 45% 14% / 0.10);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 264 45% 8%;
+    --foreground: 40 30% 98%;
+    --card: 264 40% 12%;
+    --card-foreground: 40 30% 98%;
+    --popover: 264 40% 12%;
+    --popover-foreground: 40 30% 98%;
+    --primary: 28 95% 58%;
+    --primary-foreground: 264 45% 8%;
+    --primary-glow: 36 100% 65%;
+    --secondary: 264 30% 18%;
+    --secondary-foreground: 40 30% 98%;
+    --muted: 264 30% 16%;
+    --muted-foreground: 264 15% 70%;
+    --accent: 28 95% 58%;
+    --accent-foreground: 264 45% 8%;
+    --border: 264 30% 22%;
+    --input: 264 30% 22%;
+    --ring: 28 95% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  html[dir='rtl'] body {
+    font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  html[dir='rtl'] h1,
+  html[dir='rtl'] h2,
+  html[dir='rtl'] h3,
+  html[dir='rtl'] h4,
+  html[dir='rtl'] h5 {
+    font-family: 'Cairo', 'Fraunces', Georgia, serif;
+    letter-spacing: 0;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Fraunces', Georgia, serif;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .bg-gradient-warm {
+    background: var(--gradient-warm);
+  }
+  .bg-gradient-brand {
+    background: var(--gradient-brand);
+  }
+  .bg-gradient-dark {
+    background: var(--gradient-dark);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+}
