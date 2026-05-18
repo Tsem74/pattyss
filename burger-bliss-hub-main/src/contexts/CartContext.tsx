@@ -80,9 +80,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo<CartContextValue>(() => {
     const detailedLines = lines
       .map((line) => {
-        const item = menuItems.find((m) => m.id === line.itemId);
-        if (!item) return null;
-        return { ...line, item, lineTotal: item.price * line.qty };
+        // Try to find a top-level menu item matching the line id,
+        // otherwise find the parent item that contains the variant id.
+        const parentItem =
+          menuItems.find((m) => m.id === line.itemId) ||
+          menuItems.find((m) => m.variants?.some((v) => v.id === line.itemId));
+
+        if (!parentItem) return null;
+
+        // If this line is for a variant, use the variant price, otherwise use the item's price.
+        const variant = parentItem.variants?.find((v) => v.id === line.itemId);
+        const unitPrice = variant ? variant.price : parentItem.price ?? 0;
+
+        return { ...line, item: parentItem, lineTotal: unitPrice * line.qty };
       })
       .filter(Boolean) as Array<CartLine & { item: MenuItem; lineTotal: number }>;
 

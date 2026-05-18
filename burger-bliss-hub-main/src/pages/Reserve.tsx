@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/contexts/I18nContext";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient"; // Imported your Supabase connection
 
 const schema = z.object({
   name: z.string().trim().min(2).max(80),
@@ -45,19 +46,48 @@ const Reserve = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // 1. Validate inputs using your Zod schema
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Invalid form");
       return;
     }
+    
     setSubmitting(true);
-    // Phase 1: client-side only confirmation. Backend wiring comes next.
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitting(false);
-    const id = `R-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-    navigate("/order-success", {
-      state: { orderId: id, type: "reservation", form: parsed.data },
-    });
+
+    try {
+      // 2. Insert data directly into the Supabase 'reservations' table
+      const { error } = await supabase
+        .from("reservations")
+        .insert([
+          {
+            name: parsed.data.name,
+            phone: parsed.data.phone,
+            email: parsed.data.email || null, // Stores NULL if left blank
+            party: parsed.data.party,
+            date: parsed.data.date,
+            time: parsed.data.time,
+            notes: parsed.data.notes || null,
+          },
+        ]);
+
+      if (error) throw error;
+
+      // 3. Keep your existing success routine, passing down data to confirmation screen
+      const id = `R-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+      toast.success(lang === "fr" ? "Réservation enregistrée !" : "تم تسجيل الحجز بنجاح!");
+      
+      navigate("/order-success", {
+        state: { orderId: id, type: "reservation", form: parsed.data },
+      });
+      
+    } catch (error: any) {
+      console.error("Supabase Error:", error);
+      toast.error(error.message || "An error occurred while saving your booking.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
