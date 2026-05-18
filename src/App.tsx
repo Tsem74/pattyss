@@ -14,6 +14,7 @@ import Reserve from "./pages/Reserve.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import OrderSuccess from "./pages/OrderSuccess.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Admin from "./pages/Admin.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename="/pattyss">
             <Layout>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -34,6 +35,7 @@ const App = () => (
                 <Route path="/reserve" element={<Reserve />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="/admin" element={<Admin />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
