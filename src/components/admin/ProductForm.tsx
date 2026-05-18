@@ -5,12 +5,10 @@ import { productFormSchema, type ProductFormValues, type Category, getDefaultPro
 import { useI18n } from "@/contexts/I18nContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Plus, X, Upload, ImageIcon, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Plus, X, Upload, Loader2 } from "lucide-react";
 
 interface ProductFormProps {
   onSubmit: (data: ProductFormValues) => void;
@@ -19,17 +17,17 @@ interface ProductFormProps {
   isLoading?: boolean;
 }
 
-const categoryOptions: { value: Category; label: string }[] = [
-  { value: "beef", label: "Beef Smashburgers" },
-  { value: "chicken", label: "Chicken Burgers" },
-  { value: "sides", label: "Sides & Wings" },
-  { value: "drinks", label: "Drinks & Shakes" },
+const categoryOptions: { value: Category; labelKey: string }[] = [
+  { value: "beef", labelKey: "menu.cat.beef" },
+  { value: "chicken", labelKey: "menu.cat.chicken" },
+  { value: "sides", labelKey: "menu.cat.sides" },
+  { value: "drinks", labelKey: "menu.cat.drinks" },
 ];
 
 const langLabels = { fr: "FR", en: "EN", ar: "ع" };
 
 export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }: ProductFormProps) {
-  const { lang } = useI18n();
+  const { t, lang } = useI18n();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string>(defaultValues?.image || "");
   const [isUploading, setIsUploading] = useState(false);
@@ -49,13 +47,13 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("File size must be less than 5MB");
+      alert(t("admin.filesize.error"));
       return;
     }
 
     const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     if (!validTypes.includes(file.type)) {
-      alert("Only JPG, PNG, WebP and GIF files are allowed");
+      alert(t("admin.filetype.error"));
       return;
     }
 
@@ -69,7 +67,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
     };
     reader.onerror = () => {
       setIsUploading(false);
-      alert("Failed to read file");
+      alert(t("admin.file.error"));
     };
     reader.readAsDataURL(file);
   };
@@ -82,26 +80,21 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
     }
   };
 
-  const renderLangField = (baseName: "name" | "description" | "label") => {
-    const isLabel = baseName === "label";
-    return (
-      <div className="grid grid-cols-3 gap-2">
-        {(["fr", "en", "ar"] as const).map((l) => (
-          <div key={l} className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">
-              {langLabels[l]} {isLabel ? "" : baseName}
-            </label>
-            <Input
-              {...form.register(`${baseName}.${l}` as const)}
-              placeholder={langLabels[l]}
-              dir={l === "ar" ? "rtl" : "ltr"}
-              className={l === "ar" ? "text-right" : ""}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const renderLangField = (baseName: "name" | "description") => (
+    <div className="grid grid-cols-3 gap-2">
+      {(["fr", "en", "ar"] as const).map((l) => (
+        <div key={l} className="space-y-1">
+          <label className="text-xs font-medium text-muted-foreground">{langLabels[l]}</label>
+          <Input
+            {...form.register(`${baseName}.${l}` as const)}
+            placeholder={langLabels[l]}
+            dir={l === "ar" ? "rtl" : "ltr"}
+            className={l === "ar" ? "text-right" : ""}
+          />
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <Form {...form}>
@@ -112,17 +105,17 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>{t("admin.category")}</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t("admin.selectcategory")} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {categoryOptions.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
+                        {t(opt.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -137,7 +130,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Base Price (TND)</FormLabel>
+                <FormLabel>{t("admin.baseprice")}</FormLabel>
                 <FormControl>
                   <Input type="number" step="0.5" min="0" {...field} />
                 </FormControl>
@@ -148,13 +141,13 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
         </div>
 
         <div>
-          <FormLabel>Name (FR / EN / AR)</FormLabel>
+          <FormLabel>{t("admin.name.label")}</FormLabel>
           {renderLangField("name")}
           <FormMessage>{form.formState.errors.name?.root?.message}</FormMessage>
         </div>
 
         <div>
-          <FormLabel>Description (FR / EN / AR)</FormLabel>
+          <FormLabel>{t("admin.description.label")}</FormLabel>
           {renderLangField("description")}
           <FormMessage>{form.formState.errors.description?.root?.message}</FormMessage>
         </div>
@@ -164,7 +157,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
           name="image"
           render={() => (
             <FormItem>
-              <FormLabel>Product Image</FormLabel>
+              <FormLabel>{t("admin.productimage")}</FormLabel>
               <FormControl>
                 <div className="space-y-3">
                   <input
@@ -185,7 +178,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                         type="button"
                         variant="destructive"
                         size="sm"
-                        className="absolute -top-2 -right-2"
+                        className="absolute -top-2 -end-2"
                         onClick={handleRemoveImage}
                       >
                         <X className="h-4 w-4" />
@@ -200,11 +193,11 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                       className="w-full"
                     >
                       {isUploading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <Loader2 className="me-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <Upload className="mr-2 h-4 w-4" />
+                        <Upload className="me-2 h-4 w-4" />
                       )}
-                      Click to upload image
+                      {t("admin.uploadimage")}
                     </Button>
                   )}
                 </div>
@@ -213,28 +206,9 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="featured"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Featured</FormLabel>
-                <p className="text-sm text-muted-foreground">
-                  Show on homepage featured section
-                </p>
-              </div>
-              <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <FormLabel className="mb-0">Variants (e.g., wing sizes)</FormLabel>
+            <FormLabel className="mb-0">{t("admin.variants")}</FormLabel>
             <Button
               type="button"
               variant="outline"
@@ -248,13 +222,13 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                 })
               }
             >
-              <Plus className="mr-1 h-4 w-4" />
-              Add Variant
+              <Plus className="me-1 h-4 w-4" />
+              {t("admin.addvariant")}
             </Button>
           </div>
 
           {variantFields.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No variants added</p>
+            <p className="text-sm text-muted-foreground">{t("admin.novariants")}</p>
           ) : (
             <div className="space-y-3">
               {variantFields.map((variantField, index) => (
@@ -263,7 +237,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                   className="flex flex-wrap items-start gap-2 rounded-lg border p-3"
                 >
                   <div className="flex-1 min-w-[100px] space-y-1">
-                    <label className="text-xs text-muted-foreground">Size</label>
+                    <label className="text-xs text-muted-foreground">{t("admin.size")}</label>
                     <Input
                       type="number"
                       {...form.register(`variants.${index}.size` as const, {
@@ -273,7 +247,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                     />
                   </div>
                   <div className="flex-1 min-w-[100px] space-y-1">
-                    <label className="text-xs text-muted-foreground">Price (TND)</label>
+                    <label className="text-xs text-muted-foreground">{t("admin.price.short")}</label>
                     <Input
                       type="number"
                       step="0.5"
@@ -283,7 +257,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
                     />
                   </div>
                   <div className="w-full">
-                    <label className="text-xs text-muted-foreground">Label (FR/EN/AR)</label>
+                    <label className="text-xs text-muted-foreground">{t("admin.variant.label")}</label>
                     <div className="grid grid-cols-3 gap-1 mt-1">
                       {(["fr", "en", "ar"] as const).map((l) => (
                         <Input
@@ -311,7 +285,7 @@ export function ProductForm({ onSubmit, defaultValues, submitLabel, isLoading }:
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
           {submitLabel}
         </Button>
       </form>

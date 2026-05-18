@@ -111,6 +111,55 @@ const fr: Dict = {
   "common.required": "Obligatoire",
   "common.optional": "Optionnel",
   "common.viewMore": "En savoir plus",
+  // admin
+  "admin.title": "Admin Dashboard",
+  "admin.login": "Connexion Admin",
+  "admin.signin": "Se connecter",
+  "admin.signin.desc": "Connectez-vous pour gérer les produits",
+  "admin.backtosite": "Retour au site",
+  "admin.signedinas": "Connecté en tant qu'Admin",
+  "admin.logout": "Déconnexion",
+  "admin.allproducts": "Tous les produits",
+  "admin.products.count": "{n} produit{s} dans votre menu",
+  "admin.addproduct": "Ajouter un produit",
+  "admin.editproduct": "Modifier le produit",
+  "admin.addnewproduct": "Ajouter un nouveau produit",
+  "admin.noproducts": "Aucun produit trouvé",
+  "admin.noproducts.desc": "Ajoutez votre premier produit pour commencer.",
+  "admin.category": "Catégorie",
+  "admin.name": "Nom",
+  "admin.price": "Prix",
+  "admin.featured": "À la une",
+  "admin.actions": "Actions",
+  "admin.baseprice": "Prix de base (TND)",
+  "admin.name.label": "Nom (FR / EN / AR)",
+  "admin.description.label": "Description (FR / EN / AR)",
+  "admin.productimage": "Image du produit",
+  "admin.uploadimage": "Cliquez pour télécharger une image",
+  "admin.remove": "Supprimer",
+  "admin.variants": "Variantes (ex : tailles d'ailes)",
+  "admin.addvariant": "Ajouter une variante",
+  "admin.novariants": "Aucune variante ajoutée",
+  "admin.size": "Taille",
+  "admin.price.short": "Prix (TND)",
+  "admin.variant.label": "Label (FR/EN/AR)",
+  "admin.updateproduct": "Mettre à jour",
+  "admin.deleteproduct": "Supprimer le produit",
+  "admin.delete.confirm": "Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.",
+  "admin.cancel": "Annuler",
+  "admin.delete": "Supprimer",
+  "admin.deleting": "Suppression...",
+  "admin.filldetails": "Remplissez les détails du produit ci-dessous.",
+  "admin.updatedetails": "Modifiez les détails du produit ci-dessous.",
+  "admin.edit": "Modifier",
+  "admin.delete.title": "Supprimer",
+  "admin.showonhomepage": "Afficher dans la section À la une de l'accueil",
+  "admin.image": "Image",
+  "admin.variants.count": "{n} variante{s}",
+  "admin.selectcategory": "Sélectionner une catégorie",
+  "admin.filesize.error": "La taille du fichier doit être inférieure à 5 Mo",
+  "admin.filetype.error": "Seuls les fichiers JPG, PNG, WebP et GIF sont autorisés",
+  "admin.file.error": "Échec de la lecture du fichier",
 };
 
 const en: Dict = {
@@ -206,6 +255,55 @@ const en: Dict = {
   "common.required": "Required",
   "common.optional": "Optional",
   "common.viewMore": "Learn more",
+  // admin
+  "admin.title": "Admin Dashboard",
+  "admin.login": "Admin Login",
+  "admin.signin": "Sign In",
+  "admin.signin.desc": "Sign in to manage products",
+  "admin.backtosite": "Back to Site",
+  "admin.signedinas": "Signed in as Admin",
+  "admin.logout": "Log out",
+  "admin.allproducts": "All Products",
+  "admin.products.count": "{n} product{s} in your menu",
+  "admin.addproduct": "Add Product",
+  "admin.editproduct": "Edit Product",
+  "admin.addnewproduct": "Add New Product",
+  "admin.noproducts": "No products found",
+  "admin.noproducts.desc": "Add your first product to get started.",
+  "admin.category": "Category",
+  "admin.name": "Name",
+  "admin.price": "Price",
+  "admin.featured": "Featured",
+  "admin.actions": "Actions",
+  "admin.baseprice": "Base Price (TND)",
+  "admin.name.label": "Name (FR / EN / AR)",
+  "admin.description.label": "Description (FR / EN / AR)",
+  "admin.productimage": "Product Image",
+  "admin.uploadimage": "Click to upload image",
+  "admin.remove": "Remove",
+  "admin.variants": "Variants (e.g., wing sizes)",
+  "admin.addvariant": "Add Variant",
+  "admin.novariants": "No variants added",
+  "admin.size": "Size",
+  "admin.price.short": "Price (TND)",
+  "admin.variant.label": "Label (FR/EN/AR)",
+  "admin.updateproduct": "Update Product",
+  "admin.deleteproduct": "Delete Product",
+  "admin.delete.confirm": "Are you sure you want to delete this product? This action cannot be undone.",
+  "admin.cancel": "Cancel",
+  "admin.delete": "Delete",
+  "admin.deleting": "Deleting...",
+  "admin.filldetails": "Fill in the product details below.",
+  "admin.updatedetails": "Update the product details below.",
+  "admin.edit": "Edit",
+  "admin.delete.title": "Delete",
+  "admin.showonhomepage": "Show on homepage featured section",
+  "admin.image": "Image",
+  "admin.variants.count": "{n} variant{s}",
+  "admin.selectcategory": "Select category",
+  "admin.filesize.error": "File size must be less than 5MB",
+  "admin.filetype.error": "Only JPG, PNG, WebP and GIF files are allowed",
+  "admin.file.error": "Failed to read file",
 };
 
 const ar: Dict = {
@@ -301,6 +399,55 @@ const ar: Dict = {
   "common.required": "مطلوب",
   "common.optional": "اختياري",
   "common.viewMore": "اعرف المزيد",
+  // admin
+  "admin.title": "لوحة الإدارة",
+  "admin.login": "تسجيل الدخول",
+  "admin.signin": "تسجيل الدخول",
+  "admin.signin.desc": "سجل الدخول لإدارة المنتجات",
+  "admin.backtosite": "العودة إلى الموقع",
+  "admin.signedinas": "مسجل الدخول كمدير",
+  "admin.logout": "تسجيل الخروج",
+  "admin.allproducts": "جميع المنتجات",
+  "admin.products.count": "{n} منتج في القائمة",
+  "admin.addproduct": "إضافة منتج",
+  "admin.editproduct": "تعديل المنتج",
+  "admin.addnewproduct": "إضافة منتج جديد",
+  "admin.noproducts": "لم يتم العثور على منتجات",
+  "admin.noproducts.desc": "أضف أول منتج للبدء.",
+  "admin.category": "الفئة",
+  "admin.name": "الاسم",
+  "admin.price": "السعر",
+  "admin.featured": "مميز",
+  "admin.actions": "إجراءات",
+  "admin.baseprice": "السعر الأساسي (TND)",
+  "admin.name.label": "الاسم (FR / EN / AR)",
+  "admin.description.label": "الوصف (FR / EN / AR)",
+  "admin.productimage": "صورة المنتج",
+  "admin.uploadimage": "انقر لتحميل صورة",
+  "admin.remove": "إزالة",
+  "admin.variants": "المتغيرات (مثل أحجام الأجنحة)",
+  "admin.addvariant": "إضافة متغير",
+  "admin.novariants": "لم تتم إضافة متغيرات",
+  "admin.size": "الحجم",
+  "admin.price.short": "السعر (TND)",
+  "admin.variant.label": "التسمية (FR/EN/AR)",
+  "admin.updateproduct": "تحديث المنتج",
+  "admin.deleteproduct": "حذف المنتج",
+  "admin.delete.confirm": "هل أنت متأكد من حذف هذا المنتج؟ هذا الإجراء لا يمكن التراجع عنه.",
+  "admin.cancel": "إلغاء",
+  "admin.delete": "حذف",
+  "admin.deleting": "جارٍ الحذف...",
+  "admin.filldetails": "املأ تفاصيل المنتج أدناه.",
+  "admin.updatedetails": "قم بتحديث تفاصيل المنتج أدناه.",
+  "admin.edit": "تعديل",
+  "admin.delete.title": "حذف",
+  "admin.showonhomepage": "عرض في قسم المميز بالصفحة الرئيسية",
+  "admin.image": "الصورة",
+  "admin.variants.count": "{n} متغيرات",
+  "admin.selectcategory": "اختر فئة",
+  "admin.filesize.error": "يجب أن يكون حجم الملف أقل من 5 ميغابايت",
+  "admin.filetype.error": "يُسمح فقط بملفات JPG و PNG و WebP و GIF",
+  "admin.file.error": "فشل قراءة الملف",
 };
 
 const dictionaries: Record<Language, Dict> = { fr, en, ar };
@@ -309,6 +456,7 @@ interface I18nContextValue {
   lang: Language;
   setLang: (l: Language) => void;
   t: (key: string) => string;
+  tt: (key: string, params?: Record<string, string | number>) => string;
   dir: "ltr" | "rtl";
 }
 
@@ -336,11 +484,21 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
 
   const value = useMemo<I18nContextValue>(() => {
     const dict = dictionaries[lang];
+    const t = (key: string) => dict[key] ?? dictionaries.en[key] ?? key;
     return {
       lang,
       setLang,
       dir,
-      t: (key: string) => dict[key] ?? dictionaries.en[key] ?? key,
+      t,
+      tt: (key: string, params?: Record<string, string | number>) => {
+        let result = t(key);
+        if (params) {
+          for (const [k, v] of Object.entries(params)) {
+            result = result.replace(`{${k}}`, String(v));
+          }
+        }
+        return result;
+      },
     };
   }, [lang, dir]);
 

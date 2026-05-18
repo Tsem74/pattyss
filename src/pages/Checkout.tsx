@@ -110,7 +110,7 @@ const Checkout = () => {
       lines: detailedLines.map((l) => ({
         name: l.item.name[lang],
         qty: l.qty,
-        price: l.item.price,
+        price: l.unitPrice,
         lineTotal: l.lineTotal,
       })),
       subtotal,

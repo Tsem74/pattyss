@@ -1,25 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "@/contexts/I18nContext";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useAdminProducts } from "@/hooks/useAdminProducts";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { ProductTable } from "@/components/admin/ProductTable";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ArrowLeft, Plus, LogOut, LogIn, LayoutDashboard } from "lucide-react";
 import type { ProductFormValues } from "@/types/admin";
 
 export default function Admin() {
-  const { t, lang } = useI18n();
+  const { t, tt } = useI18n();
   const { products, isLoading, addProduct, updateProduct, deleteProduct, isAdding, isUpdating, isDeleting } = useAdminProducts();
-  
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { isAuthenticated, loading: authLoading, error: authError, signIn, signOut } = useAdminAuth();
+  const [password, setPassword] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductFormValues | null>(null);
 
   const handleAddProduct = (data: ProductFormValues) => {
-    const newProduct = { ...data, id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}` };
-    addProduct(newProduct, {
+    addProduct(data, {
       onSuccess: () => {
         setIsDialogOpen(false);
       },
@@ -44,6 +46,13 @@ export default function Admin() {
     deleteProduct(productId);
   };
 
+  const handleToggleFeatured = (productId: string, currentFeatured: boolean) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      updateProduct({ ...product, featured: !currentFeatured });
+    }
+  };
+
   const handleDialogClose = (open: boolean) => {
     if (!open) {
       setIsDialogOpen(false);
@@ -51,7 +60,15 @@ export default function Admin() {
     }
   };
 
-  if (!isLoggedIn) {
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <div className="w-full max-w-md space-y-6 text-center">
@@ -60,16 +77,34 @@ export default function Admin() {
               <LayoutDashboard className="h-12 w-12 text-primary" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold">Admin Login</h1>
-          <p className="text-muted-foreground">Sign in to manage products</p>
-          <Button onClick={() => setIsLoggedIn(true)} className="w-full" size="lg">
-            <LogIn className="mr-2 h-4 w-4" />
-            Sign In
-          </Button>
+          <h1 className="text-2xl font-bold">{t("admin.login")}</h1>
+          <p className="text-muted-foreground">{t("admin.signin.desc")}</p>
+          <div className="space-y-4 text-left">
+            <div className="space-y-2">
+              <Label htmlFor="admin-password">Password</Label>
+              <Input
+                id="admin-password"
+                type="password"
+                placeholder="Enter admin password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    signIn(password);
+                  }
+                }}
+              />
+            </div>
+            {authError && <p className="text-sm text-destructive">{authError}</p>}
+            <Button onClick={() => signIn(password)} className="w-full" size="lg">
+              <LogIn className="me-2 h-4 w-4" />
+              {t("admin.signin")}
+            </Button>
+          </div>
           <Button variant="outline" asChild className="w-full">
             <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Site
+              <ArrowLeft className="me-2 h-4 w-4 rtl:rotate-180" />
+              {t("admin.backtosite")}
             </Link>
           </Button>
         </div>
@@ -83,20 +118,19 @@ export default function Admin() {
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" asChild>
-              <Link to="/" aria-label="Back to site">
-                <ArrowLeft className="h-5 w-5" />
+              <Link to="/" aria-label={t("admin.backtosite")}>
+                <ArrowLeft className="h-5 w-5 rtl:rotate-180" />
               </Link>
             </Button>
             <div>
-              <h1 className="text-lg font-semibold">Admin Dashboard</h1>
-              <p className="text-sm text-muted-foreground">Manage products</p>
+              <h1 className="text-lg font-semibold">{t("admin.title")}</h1>
+              <p className="text-sm text-muted-foreground">{t("admin.allproducts")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Signed in as Admin</span>
-            <Button variant="ghost" size="sm" onClick={() => setIsLoggedIn(false)}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Log out
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="me-2 h-4 w-4" />
+              {t("admin.logout")}
             </Button>
           </div>
         </div>
@@ -105,9 +139,9 @@ export default function Admin() {
       <main className="container py-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold">All Products</h2>
+            <h2 className="text-2xl font-bold">{t("admin.allproducts")}</h2>
             <p className="text-muted-foreground">
-              {products.length} product{products.length !== 1 ? "s" : ""} in your menu
+              {tt("admin.products.count", { n: products.length, s: products.length !== 1 ? "s" : "" })}
             </p>
           </div>
           <Button
@@ -116,8 +150,8 @@ export default function Admin() {
               setIsDialogOpen(true);
             }}
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Product
+            <Plus className="me-2 h-4 w-4" />
+            {t("admin.addproduct")}
           </Button>
         </div>
 
@@ -130,6 +164,7 @@ export default function Admin() {
             products={products}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onToggleFeatured={handleToggleFeatured}
             isDeleting={isDeleting}
           />
         )}
@@ -139,18 +174,18 @@ export default function Admin() {
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>
-              {editingProduct ? "Edit Product" : "Add New Product"}
+              {editingProduct ? t("admin.editproduct") : t("admin.addnewproduct")}
             </DialogTitle>
             <DialogDescription>
               {editingProduct
-                ? "Update the product details below."
-                : "Fill in the product details below."}
+                ? t("admin.updatedetails")
+                : t("admin.filldetails")}
             </DialogDescription>
           </DialogHeader>
           <ProductForm
             onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
             defaultValues={editingProduct || undefined}
-            submitLabel={editingProduct ? "Update Product" : "Add Product"}
+            submitLabel={editingProduct ? t("admin.updateproduct") : t("admin.addproduct")}
             isLoading={isAdding || isUpdating}
           />
         </DialogContent>
