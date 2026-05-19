@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useI18n } from "@/contexts/I18nContext";
+import { useI18n, type Language } from "@/contexts/I18nContext";
+import { cn } from "@/lib/utils";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useAdminProducts } from "@/hooks/useAdminProducts";
 import { ProductForm } from "@/components/admin/ProductForm";
@@ -13,7 +14,7 @@ import { ArrowLeft, Plus, LogOut, LogIn, LayoutDashboard } from "lucide-react";
 import type { ProductFormValues } from "@/types/admin";
 
 export default function Admin() {
-  const { t, tt } = useI18n();
+  const { t, tt, lang, setLang } = useI18n();
   const { products, isLoading, addProduct, updateProduct, deleteProduct, isAdding, isUpdating, isDeleting } = useAdminProducts();
   const { isAuthenticated, loading: authLoading, error: authError, signIn, signOut } = useAdminAuth();
   const [password, setPassword] = useState("");
@@ -128,6 +129,22 @@ export default function Admin() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-full border border-border p-0.5">
+              {(["fr", "ar", "en"] as Language[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={cn(
+                    "rounded-full px-2.5 py-0.5 text-xs font-semibold transition-smooth",
+                    lang === l
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {l === "fr" ? "FR" : l === "ar" ? "ع" : "EN"}
+                </button>
+              ))}
+            </div>
             <Button variant="ghost" size="sm" onClick={signOut}>
               <LogOut className="me-2 h-4 w-4" />
               {t("admin.logout")}

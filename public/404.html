@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patty's Smash Burger</title>
+  <script>
+    var path = location.pathname.replace("/pattyss/", "");
+    if (path) {
+      window.location.replace("/pattyss/?redirect=" + encodeURIComponent(path));
+    }
+  </script>
+</head>
+<body></body>
+</html>
