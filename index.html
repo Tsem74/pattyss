@@ -16,6 +16,15 @@
   </head>
 
   <body>
+    <script>
+      (function() {
+        var params = new URLSearchParams(location.search);
+        var redirect = params.get("redirect");
+        if (redirect) {
+          history.replaceState(null, "", "/pattyss/" + redirect);
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
