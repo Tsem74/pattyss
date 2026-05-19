@@ -4,21 +4,26 @@ import { useI18n, type Language } from "@/contexts/I18nContext";
 import { cn } from "@/lib/utils";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useAdminProducts } from "@/hooks/useAdminProducts";
+import { useAdminOrders, useUpdateOrderStatus } from "@/hooks/useAdminOrders";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { ProductTable } from "@/components/admin/ProductTable";
+import { OrderTable } from "@/components/admin/OrderTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ArrowLeft, Plus, LogOut, LogIn, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Plus, LogOut, LogIn, LayoutDashboard, Package, ShoppingBag } from "lucide-react";
 import type { ProductFormValues } from "@/types/admin";
 
 export default function Admin() {
   const { t, tt, lang, setLang } = useI18n();
   const { products, isLoading, addProduct, updateProduct, deleteProduct, isAdding, isUpdating, isDeleting } = useAdminProducts();
   const { isAuthenticated, loading: authLoading, error: authError, signIn, signOut } = useAdminAuth();
+  const { data: orders = [], isLoading: ordersLoading } = useAdminOrders();
+  const { mutate: updateOrderStatus, isPending: isUpdatingOrder } = useUpdateOrderStatus();
+  const [tab, setTab] = useState("products");
   const [password, setPassword] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductFormValues | null>(null);
 
   const handleAddProduct = (data: ProductFormValues) => {
@@ -154,37 +159,74 @@ export default function Admin() {
       </header>
 
       <main className="container py-8">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold">{t("admin.allproducts")}</h2>
-            <p className="text-muted-foreground">
-              {tt("admin.products.count", { n: products.length, s: products.length !== 1 ? "s" : "" })}
-            </p>
-          </div>
-          <Button
-            onClick={() => {
-              setEditingProduct(null);
-              setIsDialogOpen(true);
-            }}
-          >
-            <Plus className="me-2 h-4 w-4" />
-            {t("admin.addproduct")}
-          </Button>
-        </div>
+        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+          <div className="flex items-center justify-between">
+            <TabsList>
+              <TabsTrigger value="products" className="flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                {t("admin.allproducts")}
+              </TabsTrigger>
+              <TabsTrigger value="orders" className="flex items-center gap-2">
+                <ShoppingBag className="h-4 w-4" />
+                Orders
+              </TabsTrigger>
+            </TabsList>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            {tab === "products" && (
+              <Button
+                onClick={() => {
+                  setEditingProduct(null);
+                  setIsDialogOpen(true);
+                }}
+              >
+                <Plus className="me-2 h-4 w-4" />
+                {t("admin.addproduct")}
+              </Button>
+            )}
           </div>
-        ) : (
-          <ProductTable
-            products={products}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onToggleFeatured={handleToggleFeatured}
-            isDeleting={isDeleting}
-          />
-        )}
+
+          <TabsContent value="products">
+            <div className="mb-6">
+              <p className="text-muted-foreground">
+                {tt("admin.products.count", { n: products.length, s: products.length !== 1 ? "s" : "" })}
+              </p>
+            </div>
+
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              </div>
+            ) : (
+              <ProductTable
+                products={products}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onToggleFeatured={handleToggleFeatured}
+                isDeleting={isDeleting}
+              />
+            )}
+          </TabsContent>
+
+          <TabsContent value="orders">
+            <div className="mb-6">
+              <p className="text-muted-foreground">
+                {orders.length} order{orders.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+
+            {ordersLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              </div>
+            ) : (
+              <OrderTable
+                orders={orders}
+                onUpdateStatus={(orderId, status) => updateOrderStatus({ orderId, status })}
+                isUpdating={isUpdatingOrder}
+              />
+            )}
+          </TabsContent>
+        </Tabs>
       </main>
 
       <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
