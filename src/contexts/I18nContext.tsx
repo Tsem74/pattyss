@@ -160,6 +160,14 @@ const fr: Dict = {
   "admin.filesize.error": "La taille du fichier doit être inférieure à 5 Mo",
   "admin.filetype.error": "Seuls les fichiers JPG, PNG, WebP et GIF sont autorisés",
   "admin.file.error": "Échec de la lecture du fichier",
+  "admin.order.status.pending": "En attente",
+  "admin.order.status.confirmed": "Confirmée",
+  "admin.order.status.preparing": "En préparation",
+  "admin.order.status.ready": "Prête",
+  "admin.order.status.completed": "Terminée",
+  "admin.order.status.cancelled": "Annulée",
+  "admin.order.active": "Commandes actives",
+  "admin.order.completed_section": "Commandes terminées",
 };
 
 const en: Dict = {
@@ -304,6 +312,14 @@ const en: Dict = {
   "admin.filesize.error": "File size must be less than 5MB",
   "admin.filetype.error": "Only JPG, PNG, WebP and GIF files are allowed",
   "admin.file.error": "Failed to read file",
+  "admin.order.status.pending": "Pending",
+  "admin.order.status.confirmed": "Confirmed",
+  "admin.order.status.preparing": "Preparing",
+  "admin.order.status.ready": "Ready",
+  "admin.order.status.completed": "Completed",
+  "admin.order.status.cancelled": "Cancelled",
+  "admin.order.active": "Active Orders",
+  "admin.order.completed_section": "Completed Orders",
 };
 
 const ar: Dict = {
@@ -448,6 +464,14 @@ const ar: Dict = {
   "admin.filesize.error": "يجب أن يكون حجم الملف أقل من 5 ميغابايت",
   "admin.filetype.error": "يُسمح فقط بملفات JPG و PNG و WebP و GIF",
   "admin.file.error": "فشل قراءة الملف",
+  "admin.order.status.pending": "قيد الانتظار",
+  "admin.order.status.confirmed": "مؤكد",
+  "admin.order.status.preparing": "قيد التحضير",
+  "admin.order.status.ready": "جاهز",
+  "admin.order.status.completed": "مكتمل",
+  "admin.order.status.cancelled": "ملغي",
+  "admin.order.active": "الطلبات النشطة",
+  "admin.order.completed_section": "الطلبات المكتملة",
 };
 
 const dictionaries: Record<Language, Dict> = { fr, en, ar };

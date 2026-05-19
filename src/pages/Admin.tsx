@@ -24,6 +24,7 @@ export default function Admin() {
   const { mutate: updateOrderStatus, isPending: isUpdatingOrder } = useUpdateOrderStatus();
   const [tab, setTab] = useState("products");
   const [password, setPassword] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductFormValues | null>(null);
 
   const handleAddProduct = (data: ProductFormValues) => {
