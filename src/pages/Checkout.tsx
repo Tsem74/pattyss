@@ -10,6 +10,7 @@ import { useI18n } from "@/contexts/I18nContext";
 import { useCart } from "@/contexts/CartContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient";
 
 type OrderType = "takeaway" | "delivery" | "dinein";
 type PaymentMethod = "cash" | "online";
@@ -100,8 +101,35 @@ const Checkout = () => {
   const handleSubmit = async () => {
     setSubmitting(true);
     await new Promise((r) => setTimeout(r, 700));
-    setSubmitting(false);
     const id = `P-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+
+    try {
+      await supabase.from("orders").insert({
+        order_id: id,
+        name: details.name,
+        phone: details.phone,
+        email: details.email || null,
+        address: details.address || null,
+        instructions: details.instructions || null,
+        time: details.time || null,
+        date: details.date || null,
+        party: details.party ? Number(details.party) : null,
+        order_type: orderType,
+        payment_method: payment,
+        subtotal,
+        items: detailedLines.map((l) => ({
+          name: l.item.name[lang],
+          qty: l.qty,
+          price: l.unitPrice,
+          line_total: l.lineTotal,
+        })),
+        status: "pending",
+      });
+    } catch (err) {
+      console.error("Failed to persist order:", err);
+    }
+
+    setSubmitting(false);
     const orderSummary = {
       id,
       orderType,
