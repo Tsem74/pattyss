@@ -65,7 +65,8 @@ const Reserve = () => {
             name: parsed.data.name,
             phone: parsed.data.phone,
             email: parsed.data.email || null, // Stores NULL if left blank
-            party: parsed.data.party,
+            //party: parsed.data.party,
+            guests: parsed.data.party,
             date: parsed.data.date,
             time: parsed.data.time,
             notes: parsed.data.notes || null,
