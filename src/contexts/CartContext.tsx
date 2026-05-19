@@ -20,7 +20,7 @@ interface CartContextValue {
   clear: () => void;
   totalQty: number;
   subtotal: number;
-  detailedLines: Array<CartLine & { item: MenuItem; lineTotal: number }>;
+  detailedLines: Array<CartLine & { item: MenuItem; unitPrice: number; lineTotal: number }>;
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -92,9 +92,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const variant = parentItem.variants?.find((v) => v.id === line.itemId);
         const unitPrice = variant ? variant.price : parentItem.price ?? 0;
 
-        return { ...line, item: parentItem, lineTotal: unitPrice * line.qty };
+        return { ...line, item: parentItem, unitPrice, lineTotal: unitPrice * line.qty };
       })
-      .filter(Boolean) as Array<CartLine & { item: MenuItem; lineTotal: number }>;
+      .filter(Boolean) as Array<CartLine & { item: MenuItem; unitPrice: number; lineTotal: number }>;
 
     const totalQty = detailedLines.reduce((s, l) => s + l.qty, 0);
     const subtotal = detailedLines.reduce((s, l) => s + l.lineTotal, 0);

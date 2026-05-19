@@ -42,8 +42,8 @@ export const CartDrawer = () => {
           <>
             <div className="flex-1 overflow-y-auto p-6">
               <ul className="space-y-4">
-                {detailedLines.map(({ item, qty, lineTotal }) => (
-                  <li key={item.id} className="flex gap-3 border-b border-border pb-4 last:border-0">
+                {detailedLines.map(({ item, itemId, qty, unitPrice, lineTotal }) => (
+                  <li key={itemId} className="flex gap-3 border-b border-border pb-4 last:border-0">
                     <img
                       src={item.image}
                       alt={item.name[lang]}
@@ -54,18 +54,18 @@ export const CartDrawer = () => {
                       <div className="flex items-start justify-between gap-2">
                         <h4 className="font-medium leading-tight">{item.name[lang]}</h4>
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeItem(itemId)}
                           className="text-muted-foreground hover:text-destructive"
                           aria-label={t("cart.remove")}
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
-                      <p className="mt-1 text-sm text-muted-foreground">TND {item.price.toFixed(2)}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">TND {unitPrice.toFixed(2)}</p>
                       <div className="mt-auto flex items-center justify-between pt-2">
                         <div className="flex items-center rounded-full border border-border">
                           <button
-                            onClick={() => setQty(item.id, qty - 1)}
+                            onClick={() => setQty(itemId, qty - 1)}
                             className="grid h-8 w-8 place-items-center text-muted-foreground hover:text-foreground"
                             aria-label="-"
                           >
@@ -73,7 +73,7 @@ export const CartDrawer = () => {
                           </button>
                           <span className="w-6 text-center text-sm font-medium">{qty}</span>
                           <button
-                            onClick={() => setQty(item.id, qty + 1)}
+                            onClick={() => setQty(itemId, qty + 1)}
                             className="grid h-8 w-8 place-items-center text-muted-foreground hover:text-foreground"
                             aria-label="+"
                           >
