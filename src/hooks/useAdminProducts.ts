@@ -6,10 +6,17 @@ import type { ProductFormValues } from "@/types/admin";
 const STORAGE_KEY = "pattys.admin.products";
 
 function rowToProduct(row: any): ProductFormValues {
+  let image = row.image;
+  if (image && !image.startsWith("data:")) {
+    const seedItem = menuItems.find((item) => item.id === row.id);
+    if (seedItem && typeof seedItem.image === "string") {
+      image = seedItem.image;
+    }
+  }
   return {
     id: row.id,
     category: row.category,
-    image: row.image,
+    image,
     price: row.price ?? undefined,
     name: row.name,
     description: row.description,
