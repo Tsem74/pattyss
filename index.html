@@ -13,11 +13,20 @@
     <meta property="og:locale" content="fr_TN" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" crossorigin src="/pattyss/assets/index-CHdzgQgl.js"></script>
-    <link rel="stylesheet" crossorigin href="/pattyss/assets/index-DMIwOIAW.css">
+    <script type="module" crossorigin src="/pattyss/assets/index-B4qOX4Jy.js"></script>
+    <link rel="stylesheet" crossorigin href="/pattyss/assets/index-CUW3-nIm.css">
   </head>
 
   <body>
+    <script>
+      (function() {
+        var params = new URLSearchParams(location.search);
+        var redirect = params.get("redirect");
+        if (redirect) {
+          history.replaceState(null, "", "/pattyss/" + redirect);
+        }
+      })();
+    </script>
     <div id="root"></div>
   </body>
 </html>
